@@ -1,0 +1,14 @@
+{
+  "name": "employee-management-tool",
+  "version": "1.0.0",
+  "description": "CLI database tool",
+  "main": "index.js",
+  "scripts": {
+      "start": "node index.js"
+  },
+  "author": "Chase-Garrett",
+  "license": "MIT",
+  "dependencies": {
+    "inquirer": "^9.2.10"
+  }
+}
