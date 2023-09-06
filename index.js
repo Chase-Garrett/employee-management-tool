@@ -19,7 +19,10 @@ const viewAllDepartments = () => {
 
 //view all roles function
 const viewAllRoles = () => {
-    const sql = `SELECT * FROM role`;
+    const sql = `SELECT roles.id, roles.title, departments.name AS department, roles.salary
+    FROM roles
+        JOIN departments
+            ON roles.department_id = departments.id;`;
     db.query(sql, (err, rows) => {
         if(err) {
             console.log(err);
@@ -32,7 +35,15 @@ const viewAllRoles = () => {
 
 //view all employees function
 const viewAllEmployees = () => {
-    const sql = `SELECT * FROM employees`;
+    const sql = `SELECT e.id, e.first_name, e.last_name, roles.title AS title, roles.salary AS salary, departments.name AS department,
+    CONCAT(m.first_name, ' ', m.last_name) AS manager
+    FROM employees e
+        JOIN roles 
+            ON e.role_id = roles.id
+        JOIN departments
+            ON roles.department_id = departments.id
+        LEFT OUTER JOIN employees m
+            ON e.manager_id = m.id;`;
     db.query(sql, (err, rows) => {
         if(err) {
             console.log(err);
@@ -64,6 +75,52 @@ const addDepartment = () => {
             menu();
         });
     });
+};
+
+// get departments function
+const getDepartments = () => {
+    const sql = `SELECT name FROM departments`;
+    const departments = db.query(sql);
+    // set up array to hold department names
+    const departmentArray = [];
+    
+    return departmentArray;
+};
+
+// add role function
+const addRole = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'role',
+            message: 'What is the name of the role?'
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'What is the salary for this role?'
+        },
+        {
+            type: 'list',
+            name: 'department',
+            message: 'What department does this role belong to?',
+            // list of departments from db
+            choices: getDepartments()
+        }
+     ])
+        .then((answer) => {
+            const sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
+            const params = [answer.role, answer.salary, answer.department];
+            db.query(sql, params, (err, result) => {
+                if(err) {
+                    console.log(err);
+                    return;
+                }
+                console.log('Role added successfully!');
+                menu();
+            });
+        }
+    );
 };
 
 // create menu with inquirer
