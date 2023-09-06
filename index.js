@@ -53,7 +53,7 @@ const addDepartment = () => {
         }
     ])
     .then((answer) => {
-        const sql = `INSERT INTO department (name) VALUES (?)`;
+        const sql = `INSERT INTO departments (name) VALUES (?)`;
         const params = [answer.department];
         db.query(sql, params, (err, result) => {
             if(err) {
