@@ -57,9 +57,9 @@ const viewAllEmployees = async () => {
 
 // add department function
 const addDepartment = async () => {
-    const department = await inquirer.prompt(prompts.addDepartment);
+    const newDepartment = await inquirer.prompt(prompts.addDept);
 
-    await db.query(`INSERT INTO departments (name) VALUES (?)`, department.name.trim());
+    await query(`INSERT INTO departments (name) VALUES (?)`, newDepartment.deptName.trim());
 
     await viewAllDepartments();
 };
@@ -78,7 +78,7 @@ const menu = () => {
             case 'View all employees':
                 viewAllEmployees();
                 break;
-            case 'Add department':
+            case 'Add a department':
                 addDepartment();
                 break;
             case 'Add role':
