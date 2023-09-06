@@ -12,6 +12,7 @@ const query = util.promisify(db.query).bind(db);
 
 // import prompts
 const prompts = require('./lib/prompts');
+const { get } = require('http');
 
 // display data
 const displayData = (data) => {
@@ -64,6 +65,36 @@ const addDepartment = async () => {
     await viewAllDepartments();
 };
 
+// get departments function
+const getDepartments = async () => {
+    const res = await query(`SELECT id, name FROM departments;`);
+
+    for (const departments of res) {
+        const dept = {};
+        dept.id = departments.id;
+        dept.name = departments.name;
+        prompts.deptArr.push(dept);
+    }
+};
+
+// add role function
+const addRole = async () => {
+    // get departments for choices
+    await getDepartments();
+
+    const newRole = await inquirer.prompt(prompts.addRole);
+
+    // get department id
+    const dept = await query(`SELECT id FROM departments WHERE name = ?`, newRole.roleDept);
+    const deptId = dept[0].id;
+
+    // insert new role
+    await query(`INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)`,
+    [newRole.roleName.trim(), parseInt(newRole.roleSalary), deptId]);
+
+    await viewAllRoles();
+};
+
 // create menu with inquirer
 const menu = () => {
     inquirer.prompt(prompts.mainMenu)
@@ -81,7 +112,7 @@ const menu = () => {
             case 'Add a department':
                 addDepartment();
                 break;
-            case 'Add role':
+            case 'Add a role':
                 addRole();
                 break;
             case 'Add rmployee':
