@@ -2,11 +2,11 @@
 const inquirer = require('inquirer');
 
 // import db connection
-const db = require('./db/connection');
+const db = require('./db/connection').mysql();
 
 //view all departments function
 const viewAllDepartments = () => {
-    const sql = `SELECT * FROM department`;
+    const sql = `SELECT * FROM departments`;
     db.query(sql, (err, rows) => {
         if(err) {
             console.log(err);
@@ -32,7 +32,7 @@ const viewAllRoles = () => {
 
 //view all employees function
 const viewAllEmployees = () => {
-    const sql = `SELECT * FROM employee`;
+    const sql = `SELECT * FROM employees`;
     db.query(sql, (err, rows) => {
         if(err) {
             console.log(err);
@@ -113,4 +113,13 @@ const menu = () => {
                 break;
         }
     })
+};
+
+// start menu
+menu();
+
+//quit function
+const quit = () => {
+    console.log('Goodbye!');
+    process.exit();
 };
