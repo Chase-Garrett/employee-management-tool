@@ -145,6 +145,31 @@ const addEmployee = async () => {
     await viewAllEmployees();
 };
 
+// update employee role function
+const updateEmployeeRole = async () => {
+    // get employees for choices
+    await getEmployees();
+    // get roles for choices
+    await getRoles();
+
+    const updateEmployee = await inquirer.prompt(prompts.updateEmployeeRole);
+
+    // get employee id
+    const employeeName = updateEmployee.employeeName.split(' ');
+    const employee = await query(`SELECT id FROM employees WHERE first_name = (?) AND last_name = (?)`,
+    [employeeName[0], employeeName[1]]);
+    const employeeId = employee[0].id;
+
+    // get role id
+    const role = await query(`SELECT id FROM roles WHERE title = ?`, updateEmployee.employeeRole);
+    const roleId = role[0].id;
+
+    // update employee role
+    await query(`UPDATE employees SET role_id = ? WHERE id = ?`, [roleId, employeeId]);
+
+    await viewAllEmployees();
+};
+
 // create menu with inquirer
 const menu = () => {
     inquirer.prompt(prompts.mainMenu)
