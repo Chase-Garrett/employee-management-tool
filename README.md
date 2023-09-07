@@ -19,7 +19,7 @@ Clone the repository, navigate to the directory and run "npm install" to ensure 
 
 This application makes use of mysql, please ensure that you have mysql installed before continuing with the next steps.
 
-Navigate to the "db" directory and launch mysql. Use the command "source schema.sql;" to initialize the database. Then run "source seeds.sql" to populate the database with sample data.
+Navigate to the "db" directory and launch mysql. Use the command "source schema.sql" to initialize the database. Then run "source seeds.sql" to populate the database with sample data.
 
 The application is now ready to be used.
 
