@@ -30,6 +30,8 @@ To start the program use "npm start" from the application's directory. Once the 
 
 Depending on what option you select you may be presented with further options such as entering in the name of a new department or employee. Once you have completed the steps asked of you the application will always display the relevant table that has been updated.
 
+A walkthrough video can be found [here](https://drive.google.com/file/d/1xqB3XERURqHQLBut2vz-_yUaInwe5IPI/view).
+
 ## Credits
 This application makes use of node.js, inquirer, and mysql.
 
